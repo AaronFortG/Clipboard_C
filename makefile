@@ -8,7 +8,7 @@ CLIPBOARD_DIR = ./clipboard
 
 # Source files and object files
 LIBRARIES_SOURCES = $(wildcard $(LIBRARIES_DIR)/*.c)
-CLIPBOARD_SOURCES = $(wildcard $(CLIPBOARD_DIR)/*.c)
+CLIPBOARD_SOURCES = $(shell find $(CLIPBOARD_DIR) -name '*.c')
 MAIN_SOURCES = main.c
 
 # Object files for each target

@@ -1,4 +1,4 @@
-#include "../libraries/global_lib.h"
+#include "../../libraries/global_lib.h"
 
 typedef struct {
     char* text;

@@ -3,5 +3,5 @@
 void CLIPBOARD_SELECT_selectText(Clipboard* clipboard, char startIndex, char endIndex) {
     clipboard->startIndex = startIndex;
     clipboard->endIndex = endIndex;
-    clipboard->currentIndex = endIndex - startIndex  + 1;
+    clipboard->cursorPosition = endIndex - startIndex  + 1;
 }

@@ -1,8 +1,9 @@
 #include "../libraries/global_lib.h"
 #include "clipboard.h"
 #include "clipboard_operations.h"
-#include "clipboard_type.h"
-#include "clipboard_select.h"
+#include "clipboard_operations/clipboard_type.h"
+#include "clipboard_operations/clipboard_select.h"
+#include "clipboard_operations/clipboard_move_cursor.h"
 
 #define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations...\n"
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
@@ -10,7 +11,7 @@
 #define CLIPBOARD_EXIT_OPERATION_TEXT "Thanks for using this program!"
 
 Clipboard CLIPBOARD_newClipboard() {
-    Clipboard clipboard = { .text = "", .startIndex = 0, .endIndex = 0 };
+    Clipboard clipboard = { .text = "", .startIndex = 0, .endIndex = 0, .selectedArea = false };
     return clipboard;
 }
 
@@ -27,9 +28,11 @@ void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOpe
             CLIPBOARD_SELECT_selectText(clipboard, startIndex, endIndex);
             break;
         }
-
-        case CLIPBOARD_MOVE_CURSOR:
+        case CLIPBOARD_MOVE_CURSOR: {
+            char offset = atoi(clipboardOperation.operationText);
+            CLIPBOARD_MOVE_CURSOR_moveCursor(clipboard, offset);
             break;
+        }
         case CLIPBOARD_COPY:
             break;
         case CLIPBOARD_PASTE:
