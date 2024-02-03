@@ -4,7 +4,7 @@
 #define CLIPBOARD_MAX_LENGTH 50
 
 typedef struct {
-    char text[CLIPBOARD_MAX_LENGTH];
+    char text[CLIPBOARD_MAX_LENGTH + 1];    // Extra byte for the '\0' (NULL) terminator.
     char startIndex;
     char endIndex;
     char currentIndex;
@@ -18,6 +18,11 @@ typedef enum {
     CLIPBOARD_PASTE,
     CLIPBOARD_EXIT,
     CLIPBOARD_INVALID_OPERATION
+} Operation;
+
+typedef struct {
+    Operation operation;
+    char* operationText;
 } ClipboardOperation;
 
 ClipboardOperation CLIPBOARD_parseOperation(char* operationArgument);

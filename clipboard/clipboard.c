@@ -1,6 +1,7 @@
 #include "../libraries/global_lib.h"
 #include "clipboard.h"
 #include "clipboard_operations.h"
+#include "clipboard_type.h"
 
 #define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations...\n"
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
@@ -12,10 +13,11 @@ Clipboard CLIPBOARD_newClipboard() {
     return clipboard;
 }
 
-void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation operation) {
+void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
     clipboard->startIndex = 0;
-    switch (operation) {
+    switch (clipboardOperation.operation) {
         case CLIPBOARD_TYPE:
+            CLIPBOARD_TYPE_addText(clipboard, clipboardOperation.operationText);
             break;
         case CLIPBOARD_SELECT:
             break;
@@ -50,9 +52,16 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
 
     ClipboardOperation userOperation;
     do {
+        // Get the next operation from the user.
         char* bufferOperation = GLOBAL_readInput(CLIPBOARD_NEXT_OPERATION_TEXT);
+
+        // Do the selected operation.
         userOperation = CLIPBOARD_parseOperation(bufferOperation);
-    } while (userOperation != CLIPBOARD_EXIT);
+        CLIPBOARD_doOperation(&clipboard, userOperation);
+
+        // Free the temporary buffer.
+        GLOBAL_freePointer((void **) &bufferOperation);
+    } while (userOperation.operation != CLIPBOARD_EXIT);
 
     GLOBAL_printMessage(CLIPBOARD_EXIT_OPERATION_TEXT);
 }

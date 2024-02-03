@@ -1,5 +1,4 @@
 #include "clipboard_type.h"
-#include "clipboard_operations.h"
 #include "../libraries/global_lib.h"
 
 void CLIPBOARD_TYPE_addText(Clipboard* clipboard, const char* text) {

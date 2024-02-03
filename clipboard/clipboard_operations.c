@@ -9,22 +9,26 @@
 #define CLIPBOARD_PASTE_OPERATION "CLIPBOARD_PASTE"
 #define CLIPBOARD_EXIT_OPERATION "CLIPBOARD_EXIT"
 
-// Function to parse a string and convert it to the corresponding enum ClipboardOperation.
+// Function to parse a string and convert it to the corresponding enum Operation.
 ClipboardOperation CLIPBOARD_parseOperation(char* operationArgument) {
     const char* operation = strtok(operationArgument, CLIPBOARD_OPERATION_SEPARATOR);
+    ClipboardOperation clipboardOperation = { .operation = CLIPBOARD_INVALID_OPERATION, .operationText = strdup(strtok(NULL, CLIPBOARD_OPERATION_SEPARATOR)) };
+
     if (strcmp(operation, CLIPBOARD_TYPE_OPERATION) == 0) {
-        return CLIPBOARD_TYPE;
+        clipboardOperation.operation = CLIPBOARD_TYPE;
     } else if (strcmp(operation, CLIPBOARD_SELECT_OPERATION) == 0) {
-        return CLIPBOARD_SELECT;
+        clipboardOperation.operation = CLIPBOARD_SELECT;
     } else if (strcmp(operation, CLIPBOARD_MOVE_CURSOR_OPERATION) == 0) {
-        return CLIPBOARD_MOVE_CURSOR;
+        clipboardOperation.operation = CLIPBOARD_MOVE_CURSOR;
     } else if (strcmp(operation, CLIPBOARD_COPY_OPERATION) == 0) {
-        return CLIPBOARD_COPY;
+        clipboardOperation.operation = CLIPBOARD_COPY;
     } else if (strcmp(operation, CLIPBOARD_PASTE_OPERATION) == 0) {
-        return CLIPBOARD_PASTE;
+        clipboardOperation.operation = CLIPBOARD_PASTE;
     } else if (strcmp(operation, CLIPBOARD_EXIT_OPERATION) == 0) {
-        return CLIPBOARD_EXIT;
+        clipboardOperation.operation = CLIPBOARD_EXIT;
     } else {
-        return CLIPBOARD_INVALID_OPERATION;
+        clipboardOperation.operation = CLIPBOARD_INVALID_OPERATION;
     }
+
+    return clipboardOperation;
 }
