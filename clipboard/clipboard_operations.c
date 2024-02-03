@@ -1,7 +1,6 @@
 #include "clipboard_operations.h"
 #include "../libraries/global_lib.h"
 
-#define CLIPBOARD_OPERATION_SEPARATOR " "
 #define CLIPBOARD_TYPE_OPERATION "CLIPBOARD_TYPE"
 #define CLIPBOARD_SELECT_OPERATION "CLIPBOARD_SELECT"
 #define CLIPBOARD_MOVE_CURSOR_OPERATION "MOVE_CURSOR"

@@ -2,6 +2,7 @@
 #include "clipboard.h"
 #include "clipboard_operations.h"
 #include "clipboard_type.h"
+#include "clipboard_select.h"
 
 #define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations...\n"
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
@@ -15,12 +16,18 @@ Clipboard CLIPBOARD_newClipboard() {
 
 void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
     clipboard->startIndex = 0;
+
     switch (clipboardOperation.operation) {
         case CLIPBOARD_TYPE:
             CLIPBOARD_TYPE_addText(clipboard, clipboardOperation.operationText);
             break;
-        case CLIPBOARD_SELECT:
+        case CLIPBOARD_SELECT: {
+            char startIndex = atoi(strtok(clipboardOperation.operationText, CLIPBOARD_OPERATION_SEPARATOR));
+            char endIndex = atoi(strtok(NULL, CLIPBOARD_OPERATION_SEPARATOR));
+            CLIPBOARD_SELECT_selectText(clipboard, startIndex, endIndex);
             break;
+        }
+
         case CLIPBOARD_MOVE_CURSOR:
             break;
         case CLIPBOARD_COPY:

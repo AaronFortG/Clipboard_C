@@ -2,6 +2,7 @@
 #define _CLIPBOARD_OPERATIONS_LIB_H_
 
 #define CLIPBOARD_MAX_LENGTH 50
+#define CLIPBOARD_OPERATION_SEPARATOR " "
 
 typedef struct {
     char text[CLIPBOARD_MAX_LENGTH + 1];    // Extra byte for the '\0' (NULL) terminator.
