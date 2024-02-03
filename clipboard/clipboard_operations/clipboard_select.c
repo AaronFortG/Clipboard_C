@@ -4,4 +4,5 @@ void CLIPBOARD_SELECT_selectText(Clipboard* clipboard, char startIndex, char end
     clipboard->startIndex = startIndex;
     clipboard->endIndex = endIndex;
     clipboard->cursorPosition = endIndex - startIndex  + 1;
+    clipboard->selectedArea = true; // Mark area as selected.
 }

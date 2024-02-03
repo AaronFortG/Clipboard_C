@@ -5,6 +5,16 @@
 
 #define CLIPBOARD_MAX_LENGTH 50
 #define CLIPBOARD_OPERATION_SEPARATOR " "
+#define CLIPBOARD_ERROR_TEXT "There was an error during the operation! Closing program...\n"
+
+typedef struct {
+    char* text;
+} CopiedText;
+
+typedef struct {
+    int numCopiedText;
+    CopiedText* copiedTextArray;
+} CopiedTextArray;
 
 typedef struct {
     char text[CLIPBOARD_MAX_LENGTH + 1];    // Extra byte for the '\0' (NULL) terminator.
@@ -12,6 +22,7 @@ typedef struct {
     char endIndex;
     char cursorPosition;
     bool selectedArea;
+    CopiedTextArray copiedText;
 } Clipboard;
 
 typedef enum {
@@ -29,6 +40,8 @@ typedef struct {
     char* operationText;
 } ClipboardOperation;
 
-ClipboardOperation CLIPBOARD_parseOperation(char* operationArgument);
+Clipboard CLIPBOARD_MANAGER_newClipboard();
+void CLIPBOARD_MANAGER_freeClipboard(Clipboard* clipboard);
+ClipboardOperation CLIPBOARD_MANAGER_parseOperation(char* operationArgument);
 
 #endif
