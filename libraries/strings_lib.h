@@ -77,4 +77,6 @@ void STRINGS_freeParse(TokenArray** array);
 char* STRINGS_unsignedShortToAscii(unsigned short value);
 char* STRINGS_longLongToAscii(long long value);
 
+void STRINGS_separateWords(const char* inputString, char** firstSeparation, char** restOfString, const char* delimiter);
+
 #endif

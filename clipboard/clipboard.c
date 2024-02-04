@@ -5,6 +5,7 @@
 #include "clipboard_operations/clipboard_select.h"
 #include "clipboard_operations/clipboard_move_cursor.h"
 #include "clipboard_operations/clipboard_copy.h"
+#include "clipboard_operations/clipboard_paste.h"
 
 #define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations...\n"
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
@@ -12,10 +13,9 @@
 #define CLIPBOARD_EXIT_OPERATION_TEXT "Thanks for using this program!"
 
 void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
-    clipboard->startIndex = 0;
-
     switch (clipboardOperation.operation) {
         case CLIPBOARD_TYPE:
+            GLOBAL_printMessage("Type operation!\n");
             CLIPBOARD_TYPE_addText(clipboard, clipboardOperation.operationText);
             break;
         case CLIPBOARD_SELECT: {
@@ -32,12 +32,46 @@ void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOpe
         case CLIPBOARD_COPY:
             CLIPBOARD_COPY_copySelectedArea(clipboard);
             break;
-        case CLIPBOARD_PASTE:
+        case CLIPBOARD_PASTE: {
+            int stepsBack;
+            if (clipboardOperation.operationText == NULL) {
+                stepsBack = 1;
+            }
+            else {
+                stepsBack = atoi(clipboardOperation.operationText);
+            }
+            CLIPBOARD_PASTE_pasteCopiedText(clipboard, stepsBack);
             break;
+        }
         case CLIPBOARD_EXIT:
             break;
         case CLIPBOARD_INVALID_OPERATION:
             break;
+    }
+}
+
+void showClipboard(Clipboard clipboard) {
+    GLOBAL_printMessage("Clipboard text: ");
+    for (size_t i = 0; i < strlen(clipboard.text); i++) {
+        if (clipboard.cursorPosition == (char) i) {
+            GLOBAL_printMessage("|");
+        }
+        GLOBAL_printMessage("%c", clipboard.text[i]);
+    }
+
+    GLOBAL_printMessage("\nSelected area: %d.\n", clipboard.selectedArea);
+    GLOBAL_printMessage("Start index: %d - End index: %d.\n", clipboard.startIndex, clipboard.endIndex);
+    GLOBAL_printMessage("Current cursor index: %d.\n", clipboard.cursorPosition);
+    GLOBAL_printMessage("Copied areas: %d.\n", clipboard.copiedText.numCopiedText);
+    for (int i = 0; i < clipboard.copiedText.numCopiedText; i++) {
+        GLOBAL_printMessage("%s.\n", clipboard.copiedText.copiedTextArray[i]);
+    }
+
+    if (clipboard.copiedText.numCopiedText > 0) {
+        GLOBAL_printMessage("\n");
+    }
+    else {
+        GLOBAL_printMessage("\n\n");
     }
 }
 
@@ -68,6 +102,7 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
 
         // Free the temporary buffer.
         GLOBAL_freePointer((void **) &bufferOperation);
+        showClipboard(clipboard);    // TODO: Erase
     } while (userOperation.operation != CLIPBOARD_EXIT);
 
     CLIPBOARD_MANAGER_freeClipboard(&clipboard);

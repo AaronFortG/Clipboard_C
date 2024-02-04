@@ -16,8 +16,7 @@ void CLIPBOARD_COPY_copySelectedArea(Clipboard* clipboard) {
 
         // Save the copied text from the clipboard.
         int copiedTextIndex = clipboard->copiedText.numCopiedText - 1;
-        char* copiedText = NULL;
-        copiedText = STRINGS_copySubstring(clipboard->text, clipboard->startIndex, clipboard->endIndex);
+        char* copiedText = STRINGS_copySubstring(clipboard->text, clipboard->startIndex, CLIPBOARD_MANAGER_getSelectedOffset(clipboard));
         clipboard->copiedText.copiedTextArray[copiedTextIndex].text = copiedText;
     }
 }

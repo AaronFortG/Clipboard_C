@@ -160,6 +160,28 @@ char* STRINGS_copySubstring(const char* src, size_t start, size_t length) {
 }
 
 /*************************************************
+* @purpose: Create a substring (copy) allocated dynamically with content of the source string.
+* @params:  in/out: src -> string that will be used for the substring.
+			in: start -> index where the substring should start.
+            in: length -> how many extra characters to copy starting from the start index.
+* @return: Return NULL if an error occurs, char pointer (substring) otherwise.
+* ************************************************/
+char* STRINGS_removeSubstring(const char* src, size_t start, size_t length) {
+    if (length <= 0 || start >= strlen(src)) {
+        return NULL;
+    }
+
+    char *temp = NULL;
+    for (size_t i = 0; i < length; i++) {
+        if (STRINGS_concatCharacter(&temp, src[start + i]) != EXIT_SUCCESS) {
+            return NULL;
+        }
+    }
+
+    return temp;
+}
+
+/*************************************************
 * @purpose: Replace the initial string for the appended string dynamically starting from the index and clearing all the extra dest's string characters.
 * @params:  in/out: dest -> address of string that will have the replace string concatenated starting from index.
 			in/out: replace -> string to append on the dest[index] characters.
@@ -342,4 +364,24 @@ char* STRINGS_longLongToAscii(long long value) {
 
     // Reverse the string.
     return STRINGS_reverseString(numberStr);
+}
+
+void STRINGS_separateWords(const char* inputString, char** firstSeparation, char** restOfString, const char* delimiter) {
+    // Find the position of the first space character
+    char* spacePosition = strstr(inputString, delimiter);
+
+    if (spacePosition != NULL) {
+        // Allocate memory for the first word and copy it
+        size_t firstWordLength = spacePosition - inputString;
+        *firstSeparation = malloc(firstWordLength + 1);
+        strncpy(*firstSeparation, inputString, firstWordLength);
+        (*firstSeparation)[firstWordLength] = '\0';
+
+        // Set the pointer to the rest of the string
+        *restOfString = spacePosition + 1;
+    } else {
+        // Case where no space was found.
+        *firstSeparation = strdup(inputString);
+        *restOfString = NULL;
+    }
 }
