@@ -17,11 +17,15 @@ typedef struct {
 } CopiedTextArray;
 
 typedef struct {
-    char text[CLIPBOARD_MAX_LENGTH + 1];    // Extra byte for the '\0' (NULL) terminator.
+    bool selectedArea;
     char startIndex;
     char endIndex;
+} ClipboardSelectionArea;
+
+typedef struct {
+    char text[CLIPBOARD_MAX_LENGTH + 1];    // Extra byte for the '\0' (NULL) terminator.
     char cursorPosition;
-    bool selectedArea;
+    ClipboardSelectionArea selectionArea;
     CopiedTextArray copiedText;
 } Clipboard;
 

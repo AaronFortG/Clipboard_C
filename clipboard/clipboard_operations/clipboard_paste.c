@@ -3,11 +3,11 @@
 
 void CLIPBOARD_PASTE_eraseSelectedText(Clipboard* clipboard) {
     size_t originalLength = strlen(clipboard->text);
-    char shiftOffset = originalLength - clipboard->endIndex;
+    char shiftOffset = originalLength - clipboard->selectionArea.endIndex;
 
     // Remove the string by the start and end index (substring).
-    char* startString = clipboard->text + clipboard->startIndex;
-    char* endString = clipboard->text + clipboard->endIndex;
+    char* startString = clipboard->text + clipboard->selectionArea.startIndex;
+    char* endString = clipboard->text + clipboard->selectionArea.endIndex;
     memmove(startString, endString, shiftOffset);
 
     // Erase the duplicated text.
@@ -22,7 +22,7 @@ void CLIPBOARD_PASTE_pasteCopiedText(Clipboard* clipboard, int stepsBack) {
     if (stepsBack > 0 && stepsBack < clipboard->copiedText.numCopiedText) {
         //int numPastedText = clipboard->copiedText.numCopiedText - 1 - stepsBack;
 
-        if (clipboard->selectedArea == true) {
+        if (clipboard->selectionArea.selectedArea == true) {
             CLIPBOARD_PASTE_eraseSelectedText(clipboard);
         }
     }

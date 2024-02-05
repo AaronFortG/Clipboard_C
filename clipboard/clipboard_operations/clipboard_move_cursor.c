@@ -2,7 +2,7 @@
 
 void CLIPBOARD_MOVE_CURSOR_moveCursor(Clipboard* clipboard, char offset) {
     // Erase the selected area in case there was one.
-    clipboard->selectedArea = false;
+    clipboard->selectionArea.selectedArea = false;
 
     // Move the cursor based on the offset.
     clipboard->cursorPosition += offset;    // If positive offset, sum; if negative, subtract.

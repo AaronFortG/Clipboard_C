@@ -13,9 +13,9 @@ Clipboard CLIPBOARD_MANAGER_newClipboard() {
     // Initialize all the values from the data type.
     Clipboard clipboard = {
             .text = "",
-            .startIndex = 0,
-            .endIndex = 0,
-            .selectedArea = false,
+            .selectionArea.startIndex = 0,
+            .selectionArea.endIndex = 0,
+            .selectionArea.selectedArea = false,
             .cursorPosition = 0,
             .copiedText.numCopiedText = 0,
             .copiedText.copiedTextArray = NULL
@@ -34,7 +34,7 @@ void CLIPBOARD_MANAGER_freeClipboard(Clipboard* clipboard) {
 }
 
 int CLIPBOARD_MANAGER_getSelectedOffset(Clipboard* clipboard) {
-    return clipboard->endIndex - clipboard->startIndex + 1;
+    return clipboard->selectionArea.endIndex - clipboard->selectionArea.startIndex + 1;
 }
 
 // Function to parse a string and convert it to the corresponding enum Operation.

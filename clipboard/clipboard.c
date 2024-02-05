@@ -59,8 +59,8 @@ void showClipboard(Clipboard clipboard) {
         GLOBAL_printMessage("%c", clipboard.text[i]);
     }
 
-    GLOBAL_printMessage("\nSelected area: %d.\n", clipboard.selectedArea);
-    GLOBAL_printMessage("Start index: %d - End index: %d.\n", clipboard.startIndex, clipboard.endIndex);
+    GLOBAL_printMessage("\nSelected area: %d.\n", clipboard.selectionArea.selectedArea);
+    GLOBAL_printMessage("Start index: %d - End index: %d.\n", clipboard.selectionArea.startIndex, clipboard.selectionArea.endIndex);
     GLOBAL_printMessage("Current cursor index: %d.\n", clipboard.cursorPosition);
     GLOBAL_printMessage("Copied areas: %d.\n", clipboard.copiedText.numCopiedText);
     for (int i = 0; i < clipboard.copiedText.numCopiedText; i++) {
