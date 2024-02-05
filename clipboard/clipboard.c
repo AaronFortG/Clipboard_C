@@ -10,7 +10,7 @@
 #define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations...\n"
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
 #define CLIPBOARD_NEXT_OPERATION_TEXT "Type in the next operation: "
-#define CLIPBOARD_EXIT_OPERATION_TEXT "Thanks for using this program!"
+#define CLIPBOARD_EXIT_OPERATION_TEXT "Thanks for using this program!\n"
 
 void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
     switch (clipboardOperation.operation) {
@@ -52,11 +52,14 @@ void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOpe
 
 void showClipboard(Clipboard clipboard) {
     GLOBAL_printMessage("Clipboard text: ");
-    for (size_t i = 0; i < strlen(clipboard.text); i++) {
+    for (size_t i = 0; i <= strlen(clipboard.text); i++) {
         if (clipboard.cursorPosition == (char) i) {
             GLOBAL_printMessage("|");
         }
-        GLOBAL_printMessage("%c", clipboard.text[i]);
+        // Just in case the loop is needed for the '|' char.
+        if (i < strlen(clipboard.text)) {
+            GLOBAL_printMessage("%c", clipboard.text[i]);
+        }
     }
 
     GLOBAL_printMessage("\nSelected area: %d.\n", clipboard.selectionArea.selectedArea);

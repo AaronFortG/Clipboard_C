@@ -3,6 +3,6 @@
 
 #include "../clipboard_manager.h"
 
-void CLIPBOARD_TYPE_addText(Clipboard* clipboard, const char* text);
+void CLIPBOARD_TYPE_addText(Clipboard* clipboard, const char* newText);
 
 #endif

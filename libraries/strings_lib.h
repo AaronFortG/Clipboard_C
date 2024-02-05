@@ -63,6 +63,15 @@ char* STRINGS_replaceString(char** dest, char* replace, size_t index);
 char* STRINGS_copySubstring(const char* src, size_t start, size_t length);
 
 /*************************************************
+* @purpose: Insert a substring dynamically before the index of the source string.
+* @params:  in/out: dest -> address of the final string that will have source prefixed.
+            in: src -> string to set as prefix.
+            in: index -> position where the insertion should occur.
+* @return: Return NULL if an error occurs, char pointer (strings prefixed) otherwise.
+* ************************************************/
+char* STRINGS_insertSubstring(char** dest, const char* src, size_t index);
+
+/*************************************************
 * @purpose: Concatenate source string to the end of dest string.
 * @param dest destination static string that will have the source string concatenated.
 * @param source dynamic or static string that will be concatenated to dest string.

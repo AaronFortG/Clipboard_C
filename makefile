@@ -31,10 +31,17 @@ Clipboard: $(LIBRARIES_OBJECTS) $(CLIPBOARD_OBJECTS) $(MAIN_OBJECTS)
 clean:
 	rm -rf $(LIBRARIES_OBJECTS) $(CLIPBOARD_OBJECTS) $(MAIN_OBJECTS) Clipboard
 
-# 'run' and 'check' targets variables fo r executables
-.PHONY: run-clipboard, check-clipboard
-run-clipboard: Clipboard
-	./$< ["TYPE We hate pointers", "MOVE_CURSOR -3", "SELECT 3 6", "TYPE love"]
+# Variables for execution
+VALGRIND_ARGS = valgrind --leak-check=full --dsymutil=yes --show-leak-kinds=all --track-fds=yes -s --track-origins=yes --show-reachable=yes
+PROGRAM_ARGS = "TYPE We hate pointers" "MOVE_CURSOR -3" "SELECT 3 6" "TYPE love"
 
+# 'run' and 'check' targets variables fo r executables
+.PHONY: run-clipboard, check-clipboard, run-clipboard-args, check-clipboard-args
+run-clipboard: Clipboard
+	./$<
 check-clipboard: Clipboard
-	valgrind --leak-check=full --dsymutil=yes --show-leak-kinds=all --track-fds=yes -s --track-origins=yes --show-reachable=yes ./$< ["TYPE We hate pointers", "MOVE_CURSOR -3", "SELECT 3 6", "TYPE love"]
+	$(VALGRIND_ARGS) ./$<
+run-clipboard-args: Clipboard
+	./$<  $(PROGRAM_ARGS)
+check-clipboard-args: Clipboard
+	$(VALGRIND_ARGS) ./$< $(PROGRAM_ARGS)

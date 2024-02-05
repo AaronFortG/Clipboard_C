@@ -12,7 +12,7 @@ Clipboard CLIPBOARD_MANAGER_newClipboard() {
 
     // Initialize all the values from the data type.
     Clipboard clipboard = {
-            .text = "",
+            .text = NULL,
             .selectionArea.startIndex = 0,
             .selectionArea.endIndex = 0,
             .selectionArea.selectedArea = false,
@@ -31,6 +31,7 @@ void CLIPBOARD_MANAGER_freeClipboard(Clipboard* clipboard) {
         GLOBAL_freePointer((void **) &copiedText->text);
     }
     GLOBAL_freePointer((void **) &clipboard->copiedText.copiedTextArray);
+    GLOBAL_freePointer((void **) &clipboard->text);
 }
 
 int CLIPBOARD_MANAGER_getSelectedOffset(Clipboard* clipboard) {
@@ -40,25 +41,28 @@ int CLIPBOARD_MANAGER_getSelectedOffset(Clipboard* clipboard) {
 // Function to parse a string and convert it to the corresponding enum Operation.
 ClipboardOperation CLIPBOARD_MANAGER_parseOperation(char* operationArgument) {
     ClipboardOperation clipboardOperation = { .operation = CLIPBOARD_INVALID_OPERATION };
-    char* operation;
-    STRINGS_separateWords(operationArgument, &operation, &clipboardOperation.operationText, CLIPBOARD_OPERATION_SEPARATOR);
+    char* operationBuffer;
+    STRINGS_separateWords(operationArgument, &operationBuffer, &clipboardOperation.operationText, CLIPBOARD_OPERATION_SEPARATOR);
 
-    // Check what operation was typed in.
-    if (strcmp(operation, CLIPBOARD_TYPE_OPERATION) == 0) {
+    // Check what operationBuffer was typed in.
+    if (strcmp(operationBuffer, CLIPBOARD_TYPE_OPERATION) == 0) {
         clipboardOperation.operation = CLIPBOARD_TYPE;
-    } else if (strcmp(operation, CLIPBOARD_SELECT_OPERATION) == 0) {
+    } else if (strcmp(operationBuffer, CLIPBOARD_SELECT_OPERATION) == 0) {
         clipboardOperation.operation = CLIPBOARD_SELECT;
-    } else if (strcmp(operation, CLIPBOARD_MOVE_CURSOR_OPERATION) == 0) {
+    } else if (strcmp(operationBuffer, CLIPBOARD_MOVE_CURSOR_OPERATION) == 0) {
         clipboardOperation.operation = CLIPBOARD_MOVE_CURSOR;
-    } else if (strcmp(operation, CLIPBOARD_COPY_OPERATION) == 0) {
+    } else if (strcmp(operationBuffer, CLIPBOARD_COPY_OPERATION) == 0) {
         clipboardOperation.operation = CLIPBOARD_COPY;
-    } else if (strcmp(operation, CLIPBOARD_PASTE_OPERATION) == 0) {
+    } else if (strcmp(operationBuffer, CLIPBOARD_PASTE_OPERATION) == 0) {
         clipboardOperation.operation = CLIPBOARD_PASTE;
-    } else if (strcmp(operation, CLIPBOARD_EXIT_OPERATION) == 0) {
+    } else if (strcmp(operationBuffer, CLIPBOARD_EXIT_OPERATION) == 0) {
         clipboardOperation.operation = CLIPBOARD_EXIT;
     } else {
         clipboardOperation.operation = CLIPBOARD_INVALID_OPERATION;
     }
+
+    // Free the temp's operationBuffer malloc.
+    GLOBAL_freePointer((void **) &operationBuffer);
 
     return clipboardOperation;
 }

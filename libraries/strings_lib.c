@@ -42,6 +42,7 @@ int STRINGS_concatCharacter(char **temp, char buffer) {
 int STRINGS_prefixCharacter(char **temp, char buffer) {
     // Check if the string is empty
     if (*temp == NULL) {
+        GLOBAL_printMessage("String empty!\n");
         *temp = (char*) malloc(sizeof(char));
 
         if (*temp == NULL) {
@@ -61,9 +62,10 @@ int STRINGS_prefixCharacter(char **temp, char buffer) {
     }
 
     // Shift all the characters to the right.
-    for (ssize_t i = length; i >= 0; i--) {
-        (*temp)[i + 1] = (*temp)[i];
-    }
+    //for (ssize_t i = length; i >= 0; i--) {
+    //    (*temp)[i + 1] = (*temp)[i];
+    //}
+    memmove(*temp + 1, *temp, length);
 
     // Place the prefix and the last '\0' character.
     (*temp)[0] = buffer;
@@ -110,6 +112,8 @@ char* STRINGS_prefixString(char** dest, const char* src) {
             return NULL;
         }
     }
+
+    GLOBAL_printMessage("Hey: %s.\n", *dest);
 
     return *dest;
 }
@@ -179,6 +183,53 @@ char* STRINGS_removeSubstring(const char* src, size_t start, size_t length) {
     }
 
     return temp;
+}
+
+/*************************************************
+* @purpose: Insert a substring dynamically before the index of the source string.
+* @params:  in/out: dest -> address of the final string that will have source prefixed.
+            in: src -> string to set as prefix.
+            in: index -> position where the insertion should occur.
+* @return: Return NULL if an error occurs, char pointer (strings prefixed) otherwise.
+* ************************************************/
+char* STRINGS_insertSubstring(char** dest, const char* src, size_t index) {
+    if (src == NULL) {
+        return *dest;
+    }
+
+    // Calculate the length of the original string
+    size_t destLength = (*dest != NULL) ? strlen(*dest) : 0;
+
+    // Validate the insertion index
+    if (index > destLength) {
+        return NULL;
+    }
+
+    // Allocate memory for the new string (including subString)
+    size_t newStringLength = strlen(src) + destLength + 1;
+    GLOBAL_printMessage("-%ld.%ld-\n", strlen(src), destLength);
+    char* newString = (char*)malloc(newStringLength * sizeof(char));   // Include '\0' terminator.
+    if (newString == NULL) {
+        return NULL; // Handle memory allocation failure
+    }
+    memset(newString, '\0', newStringLength);
+
+    // Copy the prefix (before the insertion point) from the original string
+    strncpy(newString, *dest, index);
+
+    // Concatenate the substring
+    strcat(newString, src);
+
+    // Concatenate the remaining part of the original string
+    if (*dest != NULL && strlen(*dest) > index) {
+        strcat(newString, *dest + index);
+    }
+
+    // Update the original string
+    GLOBAL_freePointer((void **) dest);
+    *dest = newString;
+
+    return *dest;
 }
 
 /*************************************************

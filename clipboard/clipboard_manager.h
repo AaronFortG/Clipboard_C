@@ -23,7 +23,7 @@ typedef struct {
 } ClipboardSelectionArea;
 
 typedef struct {
-    char text[CLIPBOARD_MAX_LENGTH + 1];    // Extra byte for the '\0' (NULL) terminator.
+    char* text;
     char cursorPosition;
     ClipboardSelectionArea selectionArea;
     CopiedTextArray copiedText;
