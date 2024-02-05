@@ -6,7 +6,7 @@ void CLIPBOARD_COPY_copySelectedArea(Clipboard* clipboard) {
     // Copy the selected area from the clipboard (if there is any).
     if (clipboard->selectionArea.selectedArea == true) {
         clipboard->copiedText.numCopiedText++;
-        clipboard->copiedText.copiedTextArray = realloc(clipboard->copiedText.copiedTextArray, sizeof(CopiedTextArray) * clipboard->copiedText.numCopiedText);
+        clipboard->copiedText.copiedTextArray = realloc(clipboard->copiedText.copiedTextArray, sizeof(CopiedText) * clipboard->copiedText.numCopiedText);
 
         // Check if realloc was successful.
         if (clipboard->copiedText.copiedTextArray == NULL) {

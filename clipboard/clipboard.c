@@ -21,6 +21,7 @@ void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOpe
         case CLIPBOARD_SELECT: {
             char startIndex = atoi(strtok(clipboardOperation.operationText, CLIPBOARD_OPERATION_SEPARATOR));
             char endIndex = atoi(strtok(NULL, CLIPBOARD_OPERATION_SEPARATOR));
+            GLOBAL_printMessage("Selecting area with %d and %d.!\n", startIndex, endIndex);
             CLIPBOARD_SELECT_selectText(clipboard, startIndex, endIndex);
             break;
         }
@@ -44,7 +45,6 @@ void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOpe
             break;
         }
         case CLIPBOARD_EXIT:
-            break;
         case CLIPBOARD_INVALID_OPERATION:
             break;
     }
@@ -67,7 +67,7 @@ void showClipboard(Clipboard clipboard) {
     GLOBAL_printMessage("Current cursor index: %d.\n", clipboard.cursorPosition);
     GLOBAL_printMessage("Copied areas: %d.\n", clipboard.copiedText.numCopiedText);
     for (int i = 0; i < clipboard.copiedText.numCopiedText; i++) {
-        GLOBAL_printMessage("%s.\n", clipboard.copiedText.copiedTextArray[i]);
+        GLOBAL_printMessage("\t- %s.\n", clipboard.copiedText.copiedTextArray[i]);
     }
 
     if (clipboard.copiedText.numCopiedText > 0) {
@@ -92,6 +92,7 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
     for (int i = 0; i < numOperations; i++) {
         ClipboardOperation currentOperation = CLIPBOARD_MANAGER_parseOperation(operations[i]);
         CLIPBOARD_doOperation(&clipboard, currentOperation);
+        showClipboard(clipboard);
     }
 
     ClipboardOperation userOperation;

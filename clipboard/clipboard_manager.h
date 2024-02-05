@@ -48,5 +48,6 @@ Clipboard CLIPBOARD_MANAGER_newClipboard();
 void CLIPBOARD_MANAGER_freeClipboard(Clipboard* clipboard);
 int CLIPBOARD_MANAGER_getSelectedOffset(Clipboard* clipboard);
 ClipboardOperation CLIPBOARD_MANAGER_parseOperation(char* operationArgument);
+void CLIPBOARD_MANAGER_eraseSelectedText(Clipboard* clipboard);
 
 #endif

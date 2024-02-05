@@ -5,7 +5,7 @@
 #define RED_COLOR       "\x1B[31m"
 #define RESET_COLOR     "\x1b[0m"
 
-#define ARGUMENTS_ERROR "ERROR: Incorrect number of arguments! Expected at least %d arguments.\n"
+#define ARGUMENTS_ERROR "ERROR: Incorrect number of arguments (%d)! Expected at least %d arguments.\n"
 
 /*************************************************
 * @Purpose: Function to read the input from the user.
@@ -56,8 +56,8 @@ void GLOBAL_printMessage(const char* message, ...) {
 * @return Return -1 if an error occurs, 0 otherwise.
 **************************************************/
 int GLOBAL_validParams(int numArgs, int numExpected) {
-    if (numArgs != numExpected) {
-        GLOBAL_errorMessage(ARGUMENTS_ERROR, numExpected - 1);
+    if (numArgs < numExpected) {
+        GLOBAL_errorMessage(ARGUMENTS_ERROR, numArgs - 1, numExpected - 1);
         return EXIT_FAILURE;
     }
 

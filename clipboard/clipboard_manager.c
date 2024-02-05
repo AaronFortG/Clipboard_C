@@ -38,6 +38,23 @@ int CLIPBOARD_MANAGER_getSelectedOffset(Clipboard* clipboard) {
     return clipboard->selectionArea.endIndex - clipboard->selectionArea.startIndex + 1;
 }
 
+void CLIPBOARD_MANAGER_eraseSelectedText(Clipboard* clipboard) {
+    size_t originalLength = strlen(clipboard->text);
+    char shiftOffset = originalLength - clipboard->selectionArea.endIndex;
+
+    // Remove the string between the start and end index (substring).
+    char* startString = clipboard->text + clipboard->selectionArea.startIndex;
+    char* endString = clipboard->text + clipboard->selectionArea.endIndex + 1;
+    GLOBAL_printMessage("Start string: %s - End string: %s.\n", startString, endString);
+    memmove(startString, endString, shiftOffset);
+
+    // Erase the duplicated text (set it to '\0' chars).
+    char selectionOffset = CLIPBOARD_MANAGER_getSelectedOffset(clipboard);
+    int newLength = originalLength - selectionOffset;
+    char duplicatedOffset = originalLength - newLength;
+    memset(startString + shiftOffset, 0, duplicatedOffset);
+}
+
 // Function to parse a string and convert it to the corresponding enum Operation.
 ClipboardOperation CLIPBOARD_MANAGER_parseOperation(char* operationArgument) {
     ClipboardOperation clipboardOperation = { .operation = CLIPBOARD_INVALID_OPERATION };
