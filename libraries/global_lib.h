@@ -4,6 +4,13 @@
 // Llibreries a incloure
 #define _GNU_SOURCE
 
+// Color constants for the CLI text.
+#define ORANGE_COLOR    "\x1b[33m"
+#define RED_COLOR       "\x1B[31m"
+#define RESET_COLOR     "\x1b[0m"
+#define ITALIC_TEXT     "\033[3m"
+#define BOLD_TEXT       "\033[1m"
+
 // Variadic functions
 #include <stdarg.h>
 

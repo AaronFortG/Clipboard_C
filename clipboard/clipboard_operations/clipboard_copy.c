@@ -2,6 +2,7 @@
 #include "../../libraries/global_lib.h"
 
 #define CLIPBOARD_COPY_NO_SELECT_TEXT "There is no area selected when trying to copy!\n"
+#define CLIPBOARD_COPY_COPIED_TEXT "Copying text" BOLD_TEXT " '%s' " RESET_COLOR "into clipboard.\n\n"
 
 void CLIPBOARD_COPY_copySelectedArea(Clipboard* clipboard) {
 
@@ -20,6 +21,7 @@ void CLIPBOARD_COPY_copySelectedArea(Clipboard* clipboard) {
         int copiedTextIndex = clipboard->copiedText.numCopiedText - 1;
         char* copiedText = STRINGS_copySubstring(clipboard->text, clipboard->selectionArea.startIndex, CLIPBOARD_MANAGER_getSelectedOffset(clipboard));
         clipboard->copiedText.copiedTextArray[copiedTextIndex].text = copiedText;
+        GLOBAL_printMessage(CLIPBOARD_COPY_COPIED_TEXT, copiedText);
     }
     else {
         GLOBAL_errorMessage(CLIPBOARD_COPY_NO_SELECT_TEXT);

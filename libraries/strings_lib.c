@@ -42,7 +42,6 @@ int STRINGS_concatCharacter(char **temp, char buffer) {
 int STRINGS_prefixCharacter(char **temp, char buffer) {
     // Check if the string is empty
     if (*temp == NULL) {
-        GLOBAL_printMessage("String empty!\n");
         *temp = (char*) malloc(sizeof(char));
 
         if (*temp == NULL) {
@@ -112,8 +111,6 @@ char* STRINGS_prefixString(char** dest, const char* src) {
             return NULL;
         }
     }
-
-    GLOBAL_printMessage("Hey: %s.\n", *dest);
 
     return *dest;
 }
@@ -207,7 +204,6 @@ char* STRINGS_insertSubstring(char** dest, const char* src, size_t index) {
 
     // Allocate memory for the new string (including subString)
     size_t newStringLength = strlen(src) + destLength + 1;
-    GLOBAL_printMessage("-%ld.%ld-\n", strlen(src), destLength);
     char* newString = (char*)malloc(newStringLength * sizeof(char));   // Include '\0' terminator.
     if (newString == NULL) {
         return NULL; // Handle memory allocation failure

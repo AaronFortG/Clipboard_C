@@ -7,11 +7,12 @@
 #include "clipboard_operations/clipboard_copy.h"
 #include "clipboard_operations/clipboard_paste.h"
 
-#define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations...\n"
+#define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations...\n\n"
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
-#define CLIPBOARD_NEXT_OPERATION_TEXT "Type in the next operation: "
+#define CLIPBOARD_NEXT_OPERATION_TEXT "\nType in the next operation: "
 #define CLIPBOARD_EXIT_OPERATION_TEXT "Thanks for using this program!\n"
 #define CLIPBOARD_ERROR_OPERATION_TEXT "This operation is not valid!\n"
+#define CLIPBOARD_ARGUMENT_OPERATION_TEXT ITALIC_TEXT "Operation typed as argument (input):" RESET_COLOR " %s.\n"
 
 void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
     switch (clipboardOperation.operation) {
@@ -33,6 +34,8 @@ void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOpe
             CLIPBOARD_COPY_copySelectedArea(clipboard);
             break;
         case CLIPBOARD_PASTE: {
+
+            // Get the number of stepsback depending if there was a parameter (PASTE number) or there wasn't (just PASTE).
             int stepsBack;
             if (clipboardOperation.operationText == NULL) {
                 stepsBack = 1;
@@ -92,9 +95,10 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
 
     // Do all the instructions passed as parameters to the program.
     for (int i = 0; i < numOperations; i++) {
+        GLOBAL_printMessage(CLIPBOARD_ARGUMENT_OPERATION_TEXT, operations[i]);
         ClipboardOperation currentOperation = CLIPBOARD_MANAGER_parseOperation(operations[i]);
         CLIPBOARD_doOperation(&clipboard, currentOperation);
-        CLIPBOARD_showClipboard(clipboard);
+        /* CLIPBOARD_showClipboard(clipboard);  // Show clipboard's information. */
     }
 
     ClipboardOperation userOperation;
@@ -108,7 +112,7 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
 
         // Free the temporary buffer.
         GLOBAL_freePointer((void **) &bufferOperation);
-        CLIPBOARD_showClipboard(clipboard);    // TODO: Erase
+        /* CLIPBOARD_showClipboard(clipboard);  // Show clipboard's information. */
     } while (userOperation.operation != CLIPBOARD_EXIT);
 
     CLIPBOARD_MANAGER_freeClipboard(&clipboard);

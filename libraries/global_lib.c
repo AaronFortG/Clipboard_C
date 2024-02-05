@@ -1,9 +1,6 @@
 #include "global_lib.h"
 
 #define TIME_FORMAT     "%Y-%m-%d %H:%M:%S"
-#define ORANGE_COLOR    "\x1b[33m"
-#define RED_COLOR       "\x1B[31m"
-#define RESET_COLOR     "\x1b[0m"
 
 #define ARGUMENTS_ERROR "ERROR: Incorrect number of arguments (%d)! Expected at least %d arguments.\n"
 
