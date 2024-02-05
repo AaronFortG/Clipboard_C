@@ -4,8 +4,7 @@
 #define CLIPBOARD_PASTE_WRONG_PASTE_TEXT "Wrong number of stepsback when trying to paste!\n"
 
 void CLIPBOARD_PASTE_pasteCopiedText(Clipboard* clipboard, int stepsBack) {
-    GLOBAL_printMessage("Pasting %d stepsback!\n");
-
+    
     // Check if the number of steps back is inside the boundary (positive number and lower than the number of copied texts).
     if (stepsBack > 0 && stepsBack <= clipboard->copiedText.numCopiedText) {
         int numPastedText = clipboard->copiedText.numCopiedText - stepsBack;

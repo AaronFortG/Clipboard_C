@@ -18,13 +18,13 @@ typedef struct {
 
 typedef struct {
     bool selectedArea;
-    char startIndex;
-    char endIndex;
+    int startIndex;
+    int endIndex;
 } ClipboardSelectionArea;
 
 typedef struct {
     char* text;
-    char cursorPosition;
+    int cursorPosition;
     ClipboardSelectionArea selectionArea;
     CopiedTextArray copiedText;
 } Clipboard;

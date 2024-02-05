@@ -3,6 +3,6 @@
 
 #include "../clipboard_manager.h"
 
-void CLIPBOARD_SELECT_selectText(Clipboard* clipboard, char startIndex, char endIndex);
+void CLIPBOARD_SELECT_selectText(Clipboard* clipboard, int startIndex, int endIndex);
 
 #endif

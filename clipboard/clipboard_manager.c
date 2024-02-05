@@ -40,18 +40,19 @@ int CLIPBOARD_MANAGER_getSelectedOffset(Clipboard* clipboard) {
 
 void CLIPBOARD_MANAGER_eraseSelectedText(Clipboard* clipboard) {
     size_t originalLength = strlen(clipboard->text);
-    char shiftOffset = originalLength - clipboard->selectionArea.endIndex;
+    size_t shiftOffset = originalLength - clipboard->selectionArea.endIndex;
 
     // Remove the string between the start and end index (substring).
-    char* startString = clipboard->text + clipboard->selectionArea.startIndex;
-    char* endString = clipboard->text + clipboard->selectionArea.endIndex + 1;
-    GLOBAL_printMessage("Start string: %s - End string: %s.\n", startString, endString);
+    size_t startIndex = strlen(clipboard->text) > (size_t)clipboard->selectionArea.startIndex ? (size_t)clipboard->selectionArea.startIndex : strlen(clipboard->text);
+    size_t endIndex = strlen(clipboard->text) > (size_t)clipboard->selectionArea.endIndex ? (size_t)clipboard->selectionArea.endIndex + 1 : strlen(clipboard->text);
+    char* startString = clipboard->text + startIndex;
+    char* endString = clipboard->text + endIndex;
     memmove(startString, endString, shiftOffset);
 
     // Erase the duplicated text (set it to '\0' chars).
-    char selectionOffset = CLIPBOARD_MANAGER_getSelectedOffset(clipboard);
-    int newLength = originalLength - selectionOffset;
-    char duplicatedOffset = originalLength - newLength;
+    int selectionOffset = CLIPBOARD_MANAGER_getSelectedOffset(clipboard);
+    size_t newLength = originalLength - selectionOffset;
+    size_t duplicatedOffset = originalLength - newLength;
     memset(startString + shiftOffset, 0, duplicatedOffset);
     clipboard->cursorPosition = clipboard->selectionArea.startIndex;    // Update the cursor to be at the beginning of the selected text.
 }

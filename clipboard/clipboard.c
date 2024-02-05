@@ -11,22 +11,21 @@
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
 #define CLIPBOARD_NEXT_OPERATION_TEXT "Type in the next operation: "
 #define CLIPBOARD_EXIT_OPERATION_TEXT "Thanks for using this program!\n"
+#define CLIPBOARD_ERROR_OPERATION_TEXT "This operation is not valid!\n"
 
 void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
     switch (clipboardOperation.operation) {
         case CLIPBOARD_TYPE:
-            GLOBAL_printMessage("Type operation!\n");
             CLIPBOARD_TYPE_addText(clipboard, clipboardOperation.operationText);
             break;
         case CLIPBOARD_SELECT: {
-            char startIndex = atoi(strtok(clipboardOperation.operationText, CLIPBOARD_OPERATION_SEPARATOR));
-            char endIndex = atoi(strtok(NULL, CLIPBOARD_OPERATION_SEPARATOR));
-            GLOBAL_printMessage("Selecting area with %d and %d.!\n", startIndex, endIndex);
+            int startIndex = atoi(strtok(clipboardOperation.operationText, CLIPBOARD_OPERATION_SEPARATOR));
+            int endIndex = atoi(strtok(NULL, CLIPBOARD_OPERATION_SEPARATOR));
             CLIPBOARD_SELECT_selectText(clipboard, startIndex, endIndex);
             break;
         }
         case CLIPBOARD_MOVE_CURSOR: {
-            char offset = atoi(clipboardOperation.operationText);
+            int offset = atoi(clipboardOperation.operationText);
             CLIPBOARD_MOVE_CURSOR_moveCursor(clipboard, offset);
             break;
         }
@@ -45,12 +44,14 @@ void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOpe
             break;
         }
         case CLIPBOARD_EXIT:
+            break;
         case CLIPBOARD_INVALID_OPERATION:
+            GLOBAL_errorMessage(CLIPBOARD_ERROR_OPERATION_TEXT);
             break;
     }
 }
 
-void showClipboard(Clipboard clipboard) {
+void CLIPBOARD_showClipboard(Clipboard clipboard) {
     GLOBAL_printMessage("Clipboard text: ");
     for (size_t i = 0; i <= strlen(clipboard.text); i++) {
         if (clipboard.cursorPosition == (char) i) {
@@ -62,8 +63,9 @@ void showClipboard(Clipboard clipboard) {
         }
     }
 
-    GLOBAL_printMessage("\nSelected area: %d.\n", clipboard.selectionArea.selectedArea);
-    GLOBAL_printMessage("Start index: %d - End index: %d.\n", clipboard.selectionArea.startIndex, clipboard.selectionArea.endIndex);
+    GLOBAL_printMessage("\nSelected area: ");
+    clipboard.selectionArea.selectedArea == true ? GLOBAL_printMessage("true") : GLOBAL_printMessage("false");
+    GLOBAL_printMessage(" -> Start index: %d - End index: %d.\n", clipboard.selectionArea.startIndex, clipboard.selectionArea.endIndex);
     GLOBAL_printMessage("Current cursor index: %d.\n", clipboard.cursorPosition);
     GLOBAL_printMessage("Copied areas: %d.\n", clipboard.copiedText.numCopiedText);
     for (int i = 0; i < clipboard.copiedText.numCopiedText; i++) {
@@ -82,7 +84,7 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
     Clipboard clipboard = CLIPBOARD_MANAGER_newClipboard();
 
     if (numOperations > 0) {
-        GLOBAL_printMessage(CLIPBOARD_PROCESSING_OPERATIONS_TEXT);
+        GLOBAL_printMessage(CLIPBOARD_PROCESSING_OPERATIONS_TEXT, numOperations);
     }
     else {
         GLOBAL_printMessage(CLIPBOARD_NO_OPERATIONS_TEXT);
@@ -92,7 +94,7 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
     for (int i = 0; i < numOperations; i++) {
         ClipboardOperation currentOperation = CLIPBOARD_MANAGER_parseOperation(operations[i]);
         CLIPBOARD_doOperation(&clipboard, currentOperation);
-        showClipboard(clipboard);
+        CLIPBOARD_showClipboard(clipboard);
     }
 
     ClipboardOperation userOperation;
@@ -106,7 +108,7 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
 
         // Free the temporary buffer.
         GLOBAL_freePointer((void **) &bufferOperation);
-        showClipboard(clipboard);    // TODO: Erase
+        CLIPBOARD_showClipboard(clipboard);    // TODO: Erase
     } while (userOperation.operation != CLIPBOARD_EXIT);
 
     CLIPBOARD_MANAGER_freeClipboard(&clipboard);

@@ -23,7 +23,6 @@ void parseArguments(int argc, char* argv[], char* arguments[]) {
 
         // Copy only the interesting content from the parameters.
         arguments[i - 1] = STRINGS_copySubstring(argv[i], startIndex, endIndex);
-        GLOBAL_printMessage("-%s-\n", arguments[i - 1]);
     }
 }
 
@@ -35,16 +34,6 @@ void freeArguments(char* arguments[], int numArguments) {
 }
 
 int main(int argc, char* argv[]) {
-    /*for (int i = 0; i <= strlen(argv[1]); i++) {
-        printf("%c(%d)", argv[1][i], argv[1][i]);
-    }
-    printf("\n");
-
-    for (int i = 0; i <= strlen(argv[2]); i++) {
-        printf("%c(%d)", argv[2][i], argv[2][i]);
-    }
-    printf("\n");*/
-
     // Parse all the arguments.
     int numArguments = argc - 1;
     char* arguments[numArguments];
