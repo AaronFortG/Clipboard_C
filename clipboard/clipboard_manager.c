@@ -53,6 +53,7 @@ void CLIPBOARD_MANAGER_eraseSelectedText(Clipboard* clipboard) {
     int newLength = originalLength - selectionOffset;
     char duplicatedOffset = originalLength - newLength;
     memset(startString + shiftOffset, 0, duplicatedOffset);
+    clipboard->cursorPosition = clipboard->selectionArea.startIndex;    // Update the cursor to be at the beginning of the selected text.
 }
 
 // Function to parse a string and convert it to the corresponding enum Operation.
