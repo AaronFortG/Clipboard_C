@@ -1,6 +1,7 @@
 #include "clipboard_move_cursor.h"
-#include "stdio.h"
-#include "string.h"
+#include "../../libraries/global_lib.h"
+
+#define CLIPBOARD_MOVE_CURSOR_POSITION_TEXT "Cursor is now placed in" BHWHT " position %d " COLOR_RESET "-> "
 
 void CLIPBOARD_MOVE_CURSOR_moveCursor(Clipboard* clipboard, int offset) {
     // Erase the selected area in case there was one.
@@ -15,4 +16,6 @@ void CLIPBOARD_MOVE_CURSOR_moveCursor(Clipboard* clipboard, int offset) {
     } else if (clipboard->cursorPosition > (int)strlen(clipboard->text)) {
         clipboard->cursorPosition = strlen(clipboard->text);
     }
+    GLOBAL_printMessage(CLIPBOARD_MOVE_CURSOR_POSITION_TEXT, clipboard->cursorPosition);
+    CLIPBOARD_MANAGER_printTextWithCursor(*clipboard);
 }

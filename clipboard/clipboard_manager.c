@@ -7,6 +7,7 @@
 #define CLIPBOARD_COPY_OPERATION "COPY"
 #define CLIPBOARD_PASTE_OPERATION "PASTE"
 #define CLIPBOARD_EXIT_OPERATION "EXIT"
+#define CLIPBOARD_TEXT_WITH_CURSOR "'" BHWHT "%.*s" UNDERLINE_TEXT "%.*s" COLOR_RESET BHWHT "%s" COLOR_RESET"'.\n\n"
 
 Clipboard CLIPBOARD_MANAGER_newClipboard() {
 
@@ -34,8 +35,50 @@ void CLIPBOARD_MANAGER_freeClipboard(Clipboard* clipboard) {
     GLOBAL_freePointer((void **) &clipboard->text);
 }
 
-int CLIPBOARD_MANAGER_getSelectedOffset(Clipboard* clipboard) {
-    return clipboard->selectionArea.endIndex - clipboard->selectionArea.startIndex + 1;
+int CLIPBOARD_MANAGER_getSelectedOffset(Clipboard clipboard) {
+    return clipboard.selectionArea.endIndex - clipboard.selectionArea.startIndex + 1;
+}
+
+// Show cursor's position.
+void CLIPBOARD_MANAGER_printTextWithCursor(Clipboard clipboard) {
+    /*int prefixStringOffset = clipboard.cursorPosition > 0 ? clipboard.cursorPosition - 1 : 0;
+    GLOBAL_printMessage(CLIPBOARD_TEXT_WITH_CURSOR,
+                        prefixStringOffset, clipboard.text,
+                        1, clipboard.text + clipboard.cursorPosition - 1,
+                        clipboard.text + clipboard.cursorPosition);*/
+
+    GLOBAL_printMessage("'%s", BHWHT);
+
+    // Loop until i <= strlen(text) in case it is needed because of the cursor's position.
+    for (size_t i = 0; i <= strlen(clipboard.text); i++) {
+
+        // Check if the index corresponds to the cursor's position.
+        if (clipboard.cursorPosition == (int) i) {
+
+            // Check if the cursor is at the end to add a white space.
+            if (i == strlen(clipboard.text)) {
+                GLOBAL_printMessage("%s %s", BHRED UNDERLINE_TEXT, COLOR_RESET);
+            }
+            else {
+                GLOBAL_printMessage("%s%c%s", BHRED UNDERLINE_TEXT, clipboard.text[i], COLOR_RESET);
+            }
+            continue;   // Skip to the next character so that it's not written twice.
+        }
+
+        // Write the corresponding text's character.
+        if (i < strlen(clipboard.text)) {
+
+            // Highlight the selected area.
+            if (i >= (size_t) clipboard.selectionArea.startIndex && i <= (size_t) clipboard.selectionArea.endIndex && clipboard.selectionArea.selectedArea) {
+                GLOBAL_printMessage("%s%c%s", CYNB BHWHT, clipboard.text[i]);
+            }
+            else {
+                GLOBAL_printMessage("%s%c", BHWHT, clipboard.text[i]);
+            }
+        }
+    }
+
+    GLOBAL_printMessage("%s'\n\n", COLOR_RESET);
 }
 
 void CLIPBOARD_MANAGER_eraseSelectedText(Clipboard* clipboard) {
@@ -50,7 +93,7 @@ void CLIPBOARD_MANAGER_eraseSelectedText(Clipboard* clipboard) {
     memmove(startString, endString, shiftOffset);
 
     // Erase the duplicated text (set it to '\0' chars).
-    int selectionOffset = CLIPBOARD_MANAGER_getSelectedOffset(clipboard);
+    int selectionOffset = CLIPBOARD_MANAGER_getSelectedOffset(*clipboard);
     size_t newLength = originalLength - selectionOffset;
     size_t duplicatedOffset = originalLength - newLength;
     memset(startString + shiftOffset, 0, duplicatedOffset);

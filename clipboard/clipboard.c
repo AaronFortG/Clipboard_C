@@ -7,12 +7,12 @@
 #include "clipboard_operations/clipboard_copy.h"
 #include "clipboard_operations/clipboard_paste.h"
 
-#define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations...\n\n"
+#define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations as input...\n\n"
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
-#define CLIPBOARD_NEXT_OPERATION_TEXT "\nType in the next operation: "
+#define CLIPBOARD_NEXT_OPERATION_TEXT "Type in the next operation: "
 #define CLIPBOARD_EXIT_OPERATION_TEXT "Thanks for using this program!\n"
 #define CLIPBOARD_ERROR_OPERATION_TEXT "This operation is not valid!\n"
-#define CLIPBOARD_ARGUMENT_OPERATION_TEXT ITALIC_TEXT "Operation typed as argument (input):" RESET_COLOR " %s.\n"
+#define CLIPBOARD_ARGUMENT_OPERATION_TEXT ITALIC_TEXT "Operation typed as argument (input):" COLOR_RESET HWHT " \"%s\"\n" COLOR_RESET
 
 void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
     switch (clipboardOperation.operation) {
@@ -57,7 +57,7 @@ void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOpe
 void CLIPBOARD_showClipboard(Clipboard clipboard) {
     GLOBAL_printMessage("Clipboard text: ");
     for (size_t i = 0; i <= strlen(clipboard.text); i++) {
-        if (clipboard.cursorPosition == (char) i) {
+        if (clipboard.cursorPosition == (int) i) {
             GLOBAL_printMessage("|");
         }
         // Just in case the loop is needed for the '|' char.

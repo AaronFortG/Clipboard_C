@@ -5,13 +5,9 @@
 #define _GNU_SOURCE
 
 // Color constants for the CLI text.
-#define ORANGE_COLOR    "\x1b[33m"
-#define RED_COLOR       "\x1B[31m"
-#define RESET_COLOR     "\x1b[0m"
-#define ITALIC_TEXT     "\033[3m"
-#define BOLD_TEXT       "\033[1m"
+#include "ANSI-color-codes.h"
 
-// Variadic functions
+// Variadic functions (such as printMessage() simulating printf() function)
 #include <stdarg.h>
 
 // File descriptors
