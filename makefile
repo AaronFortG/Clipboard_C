@@ -36,7 +36,7 @@ VALGRIND_ARGS = valgrind --leak-check=full --dsymutil=yes --show-leak-kinds=all 
 PROGRAM_ARGS_1 = ["TYPE We hate pointers", "MOVE_CURSOR -3", "SELECT 3 6", "TYPE love"]
 PROGRAM_ARGS_2 = ["TYPE Barcelona is located in Cactus", "SELECT 0 8", "COPY", "SELECT 24 29", "COPY", "PASTE 2", "SELECT 0 8", "PASTE", "MOVE_CURSOR 24", "TYPE !"]
 
-# 'run' and 'check' targets variables fo r executables
+# 'run' and 'check' targets variables for executables
 .PHONY: run-clipboard, check-clipboard, run-clipboard-args, check-clipboard-args
 run-clipboard: Clipboard
 	./$<
