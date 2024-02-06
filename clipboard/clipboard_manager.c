@@ -57,10 +57,10 @@ void CLIPBOARD_MANAGER_printTextWithCursor(Clipboard clipboard) {
 
             // Check if the cursor is at the end to add a white space.
             if (i == strlen(clipboard.text)) {
-                GLOBAL_printMessage("%s %s", BHRED UNDERLINE_TEXT, COLOR_RESET);
+                GLOBAL_printMessage("%s %s", COLOR_RESET BHRED UNDERLINE_TEXT, COLOR_RESET);
             }
             else {
-                GLOBAL_printMessage("%s%c%s", BHRED UNDERLINE_TEXT, clipboard.text[i], COLOR_RESET);
+                GLOBAL_printMessage("%s%c%s", COLOR_RESET BHRED UNDERLINE_TEXT, clipboard.text[i], COLOR_RESET);
             }
             continue;   // Skip to the next character so that it's not written twice.
         }
@@ -70,10 +70,10 @@ void CLIPBOARD_MANAGER_printTextWithCursor(Clipboard clipboard) {
 
             // Highlight the selected area.
             if (i >= (size_t) clipboard.selectionArea.startIndex && i <= (size_t) clipboard.selectionArea.endIndex && clipboard.selectionArea.selectedArea) {
-                GLOBAL_printMessage("%s%c%s", CYNB BHWHT, clipboard.text[i]);
+                GLOBAL_printMessage("%s%c", COLOR_RESET CYNB BHWHT, clipboard.text[i]);
             }
             else {
-                GLOBAL_printMessage("%s%c", BHWHT, clipboard.text[i]);
+                GLOBAL_printMessage("%s%c", COLOR_RESET BHWHT, clipboard.text[i]);
             }
         }
     }

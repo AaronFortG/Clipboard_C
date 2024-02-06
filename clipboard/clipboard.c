@@ -9,10 +9,10 @@
 
 #define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations as input...\n\n"
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
-#define CLIPBOARD_NEXT_OPERATION_TEXT "Type in the next operation: "
+#define CLIPBOARD_NEXT_OPERATION_TEXT "Type in the next operation: " HWHT
 #define CLIPBOARD_EXIT_OPERATION_TEXT "Thanks for using this program!\n"
-#define CLIPBOARD_ERROR_OPERATION_TEXT "This operation is not valid!\n"
-#define CLIPBOARD_ARGUMENT_OPERATION_TEXT ITALIC_TEXT "Operation typed as argument (input):" COLOR_RESET HWHT " \"%s\"\n" COLOR_RESET
+#define CLIPBOARD_ERROR_OPERATION_TEXT "Please enter a valid operation: TYPE, SELECT, MOVE_CURSOR, COPY, PASTE or EXIT.\n\n"
+#define CLIPBOARD_ARGUMENT_OPERATION_TEXT ITALIC_TEXT "Operation typed as argument (input): " COLOR_RESET HWHT "%s" COLOR_RESET "\n"
 
 void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
     switch (clipboardOperation.operation) {
@@ -105,6 +105,7 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
     do {
         // Get the next operation from the user.
         char* bufferOperation = GLOBAL_readInput(CLIPBOARD_NEXT_OPERATION_TEXT);
+        GLOBAL_printMessage(COLOR_RESET);
 
         // Do the selected operation.
         userOperation = CLIPBOARD_MANAGER_parseOperation(bufferOperation);

@@ -126,7 +126,7 @@ void GLOBAL_errorMessage(const char *event, ...) {
         return;
     }
 
-    GLOBAL_printMessage("%s%s%s", RED_COLOR, buffer, RESET_COLOR);
+    GLOBAL_printMessage("%s%s%s", RED, buffer, COLOR_RESET);
 
     // Even if vasprintf fails or succeeds, the content of strp is undefined when freed or when an error ocurred.
     GLOBAL_freePointer((void **) &buffer);

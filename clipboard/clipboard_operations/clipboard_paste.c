@@ -4,7 +4,7 @@
 #define CLIPBOARD_PASTE_WRONG_PASTE_TEXT "Wrong number of stepsback when trying to paste!\n"
 #define CLIPBOARD_PASTE_COPIED_TEXT "Pasting text '" BHWHT "%s" COLOR_RESET "' from clipboard.\n"
 #define CLIPBOARD_PASTE_NEW_TEXT "New text pasted: "
-#define CLIPBOARD_PASTE_PREVIOUS_TEXT "Previous text: '" BHWHT "%.*s" UNDERLINE_TEXT "%.*s" COLOR_RESET BHWHT "%.*s" COLOR_RESET "'\n"
+#define CLIPBOARD_PASTE_PREVIOUS_TEXT "Previous text: '" BHWHT "%.*s" REDB "%.*s" COLOR_RESET BHWHT "%.*s" COLOR_RESET "'\n"
 
 void CLIPBOARD_PASTE_pasteCopiedText(Clipboard* clipboard, int stepsBack) {
     // Check if the number of steps back is inside the boundary (positive number and lower than the number of copied texts).
