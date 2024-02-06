@@ -31,6 +31,8 @@ Program end date: **6th February, 2024**
 * ### EXIT
   Finish the execution of the Clipboard's program.
 
+_Take into account that the clipboard's cursor in the text is shown as an underscore_ ( _ ).
+
 ---
 
 ## 2. Program's execution

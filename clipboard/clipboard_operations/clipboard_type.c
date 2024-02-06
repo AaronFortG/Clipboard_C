@@ -29,8 +29,9 @@ void CLIPBOARD_TYPE_addText(Clipboard* clipboard, const char* newText) {
         }
         STRINGS_insertSubstring(&(clipboard->text), newText, clipboard->cursorPosition);
 
-        // Update current cursor's position.
+        // Update current cursor's position and deselect the area.
         clipboard->cursorPosition += strlen(newText);
+        clipboard->selectionArea.selectedArea = false;
         GLOBAL_printMessage(CLIPBOARD_PASTE_NEW_TEXT);
         CLIPBOARD_MANAGER_printTextWithCursor(*clipboard);
     } else {
