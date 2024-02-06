@@ -125,7 +125,7 @@ void CLIPBOARD_MANAGER_eraseSelectedText(Clipboard* clipboard) {
 }
 
 /*************************************************
-* @brief Function to parse a string and convert it to the corresponding enum OperationType.
+* @brief Function to parse a string and convert it to the corresponding enum Operation.
 * @param  clipboard clipboard's variable that will have the text written.
 * @param  newText   string that has the new text to be written.
 * @return ----.

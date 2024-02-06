@@ -12,7 +12,7 @@
 
 #define CLIPBOARD_MAX_LENGTH 50
 #define CLIPBOARD_OPERATION_SEPARATOR " "
-#define CLIPBOARD_ERROR_TEXT "There was an error during the operationType! Closing program...\n"
+#define CLIPBOARD_ERROR_TEXT "There was an error during the operation! Closing program...\n"
 
 typedef struct {
     char* text;

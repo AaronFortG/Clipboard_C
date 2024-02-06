@@ -9,7 +9,7 @@
 #include "../../libraries/global_lib.h"
 
 // Texts constants regarding clipboard's PASTE operation
-#define CLIPBOARD_PASTE_WRONG_PASTE_TEXT "Wrong number of stepsback when trying to paste!\n"
+#define CLIPBOARD_PASTE_WRONG_PASTE_TEXT "Wrong number of steps-back when trying to paste!\n"
 #define CLIPBOARD_PASTE_COPIED_TEXT "Pasting text '" BHWHT "%s" COLOR_RESET "' from clipboard.\n"
 #define CLIPBOARD_PASTE_NEW_TEXT "New text pasted: "
 #define CLIPBOARD_PASTE_PREVIOUS_TEXT "Previous text: '" BHWHT "%.*s" REDB "%.*s" COLOR_RESET BHWHT "%.*s" COLOR_RESET "'\n"

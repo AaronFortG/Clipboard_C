@@ -17,18 +17,18 @@
 // Texts constants regarding clipboard's operations
 #define CLIPBOARD_PROCESSING_OPERATIONS_TEXT "Processing %d operations as input...\n\n"
 #define CLIPBOARD_NO_OPERATIONS_TEXT "There are no operations to process.\n"
-#define CLIPBOARD_NEXT_OPERATION_TEXT "Type in the next operationType: " HWHT
+#define CLIPBOARD_NEXT_OPERATION_TEXT "Type in the next operation: " HWHT
 #define CLIPBOARD_EXIT_OPERATION_TEXT "\nThanks for using Clipboard's program!\n"
-#define CLIPBOARD_ERROR_OPERATION_TEXT "Please enter a valid operationType: TYPE, SELECT, MOVE_CURSOR, COPY, PASTE or EXIT.\n\n"
-#define CLIPBOARD_ARGUMENT_OPERATION_TEXT ITALIC_TEXT "OperationType typed as argument (input): " COLOR_RESET HWHT "%s" COLOR_RESET "\n"
+#define CLIPBOARD_ERROR_OPERATION_TEXT "Please enter a valid operation: TYPE, SELECT, MOVE_CURSOR, COPY, PASTE or EXIT.\n\n"
+#define CLIPBOARD_ARGUMENT_OPERATION_TEXT ITALIC_TEXT "Operation typed as argument (input): " COLOR_RESET HWHT "%s" COLOR_RESET "\n"
 
 // Global clipboard variable in case it's needed to free its memory on an interrupt (SIGINT).
 Clipboard clipboard;
 
 /*************************************************
-* @brief Function to execute a clipboard operationType.
-* @param  clipboard pointer to clipboard's variable that does the operationType.
-* @param  clipboardOperation type of operationType and its parameters.
+* @brief Function to execute a clipboard operation.
+* @param  clipboard pointer to clipboard's variable that does the operation.
+* @param  clipboardOperation type of operation and its parameters.
 * @return ----.
 **************************************************/
 void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
@@ -141,11 +141,11 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
 
     ClipboardOperation userOperation;
     do {
-        // Get the next operationType from the user.
+        // Get the next operation from the user.
         char* bufferOperation = GLOBAL_readInput(CLIPBOARD_NEXT_OPERATION_TEXT);
         GLOBAL_printMessage(COLOR_RESET);
 
-        // Do the selected operationType.
+        // Do the selected operation.
         userOperation = CLIPBOARD_MANAGER_parseOperation(bufferOperation);
         CLIPBOARD_doOperation(&clipboard, userOperation);
 
