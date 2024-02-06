@@ -1,14 +1,25 @@
+/**
+ * @file clipboard_manager.c
+ * @author Aaron Fort Garcia
+ * @date 3rd February 2024.
+ * @brief Clipboard's manager module.
+ */
+
 #include "clipboard_manager.h"
 #include "../libraries/global_lib.h"
 
+// Texts constants regarding clipboard's operations
 #define CLIPBOARD_TYPE_OPERATION "TYPE"
 #define CLIPBOARD_SELECT_OPERATION "SELECT"
 #define CLIPBOARD_MOVE_CURSOR_OPERATION "MOVE_CURSOR"
 #define CLIPBOARD_COPY_OPERATION "COPY"
 #define CLIPBOARD_PASTE_OPERATION "PASTE"
 #define CLIPBOARD_EXIT_OPERATION "EXIT"
-#define CLIPBOARD_TEXT_WITH_CURSOR "'" BHWHT "%.*s" UNDERLINE_TEXT "%.*s" COLOR_RESET BHWHT "%s" COLOR_RESET"'.\n\n"
 
+/*************************************************
+* @brief Function to initialize a new Clipboard variable.
+* @return ----.
+**************************************************/
 Clipboard CLIPBOARD_MANAGER_newClipboard() {
 
     // Initialize all the values from the data type.
@@ -24,6 +35,11 @@ Clipboard CLIPBOARD_MANAGER_newClipboard() {
     return clipboard;
 }
 
+/*************************************************
+* @brief Function to free all the memory from a Clipboard.
+* @param  clipboard clipboard's variable that will be freed.
+* @return ----.
+**************************************************/
 void CLIPBOARD_MANAGER_freeClipboard(Clipboard* clipboard) {
 
     // Free all the memory used in the clipboard.
@@ -35,18 +51,21 @@ void CLIPBOARD_MANAGER_freeClipboard(Clipboard* clipboard) {
     GLOBAL_freePointer((void **) &clipboard->text);
 }
 
+/*************************************************
+* @brief Function to get the clipboard's selected area offset from.
+* @param  clipboard clipboard's variable that has the selected area stored.
+* @return ----.
+**************************************************/
 int CLIPBOARD_MANAGER_getSelectedOffset(Clipboard clipboard) {
     return clipboard.selectionArea.endIndex - clipboard.selectionArea.startIndex + 1;
 }
 
-// Show cursor's position.
+/*************************************************
+* @brief Function to show the current clipboard's text with the cursor's position in it.
+* @param  clipboard clipboard's variable that has the text and cursor stored.
+* @return ----.
+**************************************************/
 void CLIPBOARD_MANAGER_printTextWithCursor(Clipboard clipboard) {
-    /*int prefixStringOffset = clipboard.cursorPosition > 0 ? clipboard.cursorPosition - 1 : 0;
-    GLOBAL_printMessage(CLIPBOARD_TEXT_WITH_CURSOR,
-                        prefixStringOffset, clipboard.text,
-                        1, clipboard.text + clipboard.cursorPosition - 1,
-                        clipboard.text + clipboard.cursorPosition);*/
-
     GLOBAL_printMessage("'%s", BHWHT);
 
     // Loop until i <= strlen(text) in case it is needed because of the cursor's position.
@@ -81,6 +100,11 @@ void CLIPBOARD_MANAGER_printTextWithCursor(Clipboard clipboard) {
     GLOBAL_printMessage("%s'\n\n", COLOR_RESET);
 }
 
+/*************************************************
+* @brief Function to erase the text inside the selected area from the clipboard.
+* @param  clipboard clipboard's variable that has the whole text stored.
+* @return ----.
+**************************************************/
 void CLIPBOARD_MANAGER_eraseSelectedText(Clipboard* clipboard) {
     size_t originalLength = strlen(clipboard->text);
     size_t shiftOffset = originalLength - clipboard->selectionArea.endIndex;
@@ -100,27 +124,32 @@ void CLIPBOARD_MANAGER_eraseSelectedText(Clipboard* clipboard) {
     clipboard->cursorPosition = clipboard->selectionArea.startIndex;    // Update the cursor to be at the beginning of the selected text.
 }
 
-// Function to parse a string and convert it to the corresponding enum Operation.
+/*************************************************
+* @brief Function to parse a string and convert it to the corresponding enum OperationType.
+* @param  clipboard clipboard's variable that will have the text written.
+* @param  newText   string that has the new text to be written.
+* @return ----.
+**************************************************/
 ClipboardOperation CLIPBOARD_MANAGER_parseOperation(char* operationArgument) {
-    ClipboardOperation clipboardOperation = { .operation = CLIPBOARD_INVALID_OPERATION };
+    ClipboardOperation clipboardOperation = { .operationType = CLIPBOARD_INVALID_OPERATION };
     char* operationBuffer;
     STRINGS_separateWords(operationArgument, &operationBuffer, &clipboardOperation.operationText, CLIPBOARD_OPERATION_SEPARATOR);
 
     // Check what operationBuffer was typed in.
     if (strcmp(operationBuffer, CLIPBOARD_TYPE_OPERATION) == 0) {
-        clipboardOperation.operation = CLIPBOARD_TYPE;
+        clipboardOperation.operationType = CLIPBOARD_TYPE;
     } else if (strcmp(operationBuffer, CLIPBOARD_SELECT_OPERATION) == 0) {
-        clipboardOperation.operation = CLIPBOARD_SELECT;
+        clipboardOperation.operationType = CLIPBOARD_SELECT;
     } else if (strcmp(operationBuffer, CLIPBOARD_MOVE_CURSOR_OPERATION) == 0) {
-        clipboardOperation.operation = CLIPBOARD_MOVE_CURSOR;
+        clipboardOperation.operationType = CLIPBOARD_MOVE_CURSOR;
     } else if (strcmp(operationBuffer, CLIPBOARD_COPY_OPERATION) == 0) {
-        clipboardOperation.operation = CLIPBOARD_COPY;
+        clipboardOperation.operationType = CLIPBOARD_COPY;
     } else if (strcmp(operationBuffer, CLIPBOARD_PASTE_OPERATION) == 0) {
-        clipboardOperation.operation = CLIPBOARD_PASTE;
+        clipboardOperation.operationType = CLIPBOARD_PASTE;
     } else if (strcmp(operationBuffer, CLIPBOARD_EXIT_OPERATION) == 0) {
-        clipboardOperation.operation = CLIPBOARD_EXIT;
+        clipboardOperation.operationType = CLIPBOARD_EXIT;
     } else {
-        clipboardOperation.operation = CLIPBOARD_INVALID_OPERATION;
+        clipboardOperation.operationType = CLIPBOARD_INVALID_OPERATION;
     }
 
     // Free the temp's operationBuffer malloc.

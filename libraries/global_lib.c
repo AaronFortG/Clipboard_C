@@ -1,7 +1,13 @@
+/**
+ * @file global_lib.c
+ * @author Aaron Fort Garcia
+ * @date 3rd February 2024.
+ * @brief Global system calls module.
+ */
+
 #include "global_lib.h"
 
 #define TIME_FORMAT     "%Y-%m-%d %H:%M:%S"
-
 #define ARGUMENTS_ERROR "ERROR: Incorrect number of arguments (%d)! Expected at least %d arguments.\n"
 
 /*************************************************

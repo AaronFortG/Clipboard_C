@@ -1,4 +1,9 @@
-// Libraries to include
+/**
+ * @file files_lib.c
+ * @author Aaron Fort Garcia
+ * @date 3rd February 2024.
+ * @brief System calls with files module.
+ */
 #include "global_lib.h"
 
 #include "files_lib.h"

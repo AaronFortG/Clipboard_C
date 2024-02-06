@@ -1,7 +1,14 @@
+/**
+ * @file global_lib.h
+ * @author Aaron Fort Garcia
+ * @date 3rd February 2024.
+ * @brief Global system calls module.
+ */
+
 #ifndef _GLOBAL_LIB_H_
 #define _GLOBAL_LIB_H_
 
-// Llibreries a incloure
+// Necessary define for coming includes.
 #define _GNU_SOURCE
 
 // Color constants for the CLI text.
@@ -33,7 +40,7 @@
 #include "files_lib.h"
 #include "strings_lib.h"
 
-// Constants i macros
+// Constants and macros
 #define printGA(x) write(STDOUT_FILENO, x, strlen(x))
 
 /*************************************************
@@ -51,24 +58,24 @@ char* GLOBAL_readInput(const char* message);
 void GLOBAL_printMessage(const char* message, ...);
 
 /*************************************************
-* @brief Function to check if the number of parameters is correct.
+* @brief  Function to check if the number of parameters is correct.
 * @param  numArgs the number of arguments.
 * @param  numExpected the number of arguments expected.
 * @return Return -1 if an error occurs, 0 otherwise.
 **************************************************/
 int GLOBAL_validParams(int numArgs, int numExpected);
 
-/**
-*   @brief Frees a pointer and sets it to NULL
-*   @param pointer address of pointer to free (it is also set to NULL).
-*/
+/*************************************************
+* @brief Frees a pointer and sets it to NULL
+* @param pointer address of pointer to free (it is also set to NULL).
+**************************************************/
 void GLOBAL_freePointer(void** pointer);
 
-/**
+/*************************************************
 * @brief Print an error message in red color.
 * @param event string with the error message
 * @param ... arguments to print with the message
-*/
+**************************************************/
 void GLOBAL_errorMessage(const char *event, ...);
 
 #endif

@@ -1,13 +1,26 @@
+/**
+ * @file main.c
+ * @author Aaron Fort Garcia
+ * @date 3rd February 2024.
+ * @brief Main program's file.
+ */
+
 #include "libraries/global_lib.h"
 #include "clipboard/clipboard.h"
 
 #define MINIMUM_ARGUMENTS 1
-#define PROGRAM_USAGE_TEXT "Usage of Clipboard program: ./Clipboard [\"Operation 1\", \"Operation 2\"...]\n"
+#define PROGRAM_USAGE_TEXT "Usage of Clipboard program: ./Clipboard [\"OperationType 1\", \"OperationType 2\"...]\n"
 
 int numArguments = 0;
 char** argumentValue;
 
-// Transform arguments from the program into valid instructions for the Clipboard.
+/*************************************************
+* @brief Transform arguments from the program into valid instructions for the Clipboard.
+* @param argc Number of command-line arguments.
+* @param argv Array of command-line arguments.
+* @param arguments Pointer to store the parsed arguments.
+* @note The memory for the parsed arguments is dynamically allocated and needs to be freed by the caller.
+**************************************************/
 void parseArguments(int argc, char* argv[], char*** arguments) {
     // Allocate all the necessary memory.
     *arguments = (char **) malloc (sizeof(char *) * argc);
@@ -32,7 +45,11 @@ void parseArguments(int argc, char* argv[], char*** arguments) {
     }
 }
 
-// Free all the memory allocated for the arguments.
+/*************************************************
+* @brief Free all the memory allocated for the arguments.
+* @param arguments Pointer to the array of arguments.
+* @param numArgs Number of arguments in the array.
+**************************************************/
 void freeArguments(char** arguments, int numArgs) {
     for (int i = 0; i < numArgs; i++) {
         GLOBAL_freePointer((void **) &arguments[i]);
@@ -40,6 +57,11 @@ void freeArguments(char** arguments, int numArgs) {
     GLOBAL_freePointer((void **) &arguments);
 }
 
+/*************************************************
+* @brief Signal handler function to handle SIGINT.
+* @param signum Signal number (unused).
+* @note This function cleans up resources and exits the program gracefully.
+**************************************************/
 void signalHandler(int signum __attribute__((unused))) {
     signal(SIGINT, SIG_DFL);
     CLIPBOARD_finishClipboard();
@@ -47,6 +69,12 @@ void signalHandler(int signum __attribute__((unused))) {
     exit(EXIT_SUCCESS);
 }
 
+/*************************************************
+* @brief Main function to start the program.
+* @param argc Number of command-line arguments.
+* @param argv Array of command-line arguments.
+* @return Returns EXIT_SUCCESS if the program exits successfully, EXIT_FAILURE otherwise.
+**************************************************/
 int main(int argc, char* argv[]) {
     signal(SIGINT, signalHandler);
 

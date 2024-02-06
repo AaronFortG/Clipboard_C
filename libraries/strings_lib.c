@@ -1,10 +1,17 @@
+/**
+ * @file strings_lib.c
+ * @author Aaron Fort Garcia
+ * @date 3rd February 2024.
+ * @brief Strings' management module.
+ */
+
 #include "strings_lib.h"
 
-/*********************************************** *
-* @Purpose: Function to concatenate a char with an array of char.
-* @Params:  in/out: temp -> the array char to concatenate.
-			in: buffer -> the char to concatenate.
-* @Return: Return -1 if an error occurs, 0 otherwise.
+/************************************************
+* @brief Function to concatenate a char with an array of char.
+* @param temp the array char to concatenate.
+* @param buffer the char to concatenate.
+* @return return -EXIT_FAILURE if an error occurs, EXIT_SUCCESS otherwise.
 * ************************************************/
 int STRINGS_concatCharacter(char **temp, char buffer) {
     // Check if the string is empty
@@ -34,12 +41,12 @@ int STRINGS_concatCharacter(char **temp, char buffer) {
 }
 
 /*************************************************
-* @purpose: Create a substring (copy) allocated dynamically with content of the source string.
-* @params:  in/out: src -> string that will be used for the substring.
-			in: start -> index where the substring should start.
-            in: length -> how many extra characters to copy starting from the start index.
-* @return: Return NULL if an error occurs, char pointer (substring) otherwise.
-* ************************************************/
+* @brief Function to create a substring (copy) allocated dynamically with content of the source string.
+* @param src String that will be used for the substring.
+* @param start Index where the substring should start.
+* @param length How many extra characters to copy starting from the start index.
+* @return Return NULL if an error occurs, char pointer (substring) otherwise.
+**************************************************/
 char* STRINGS_copySubstring(const char* src, size_t start, size_t length) {
     if (length <= 0 || start >= strlen(src)) {
         return NULL;
@@ -56,12 +63,12 @@ char* STRINGS_copySubstring(const char* src, size_t start, size_t length) {
 }
 
 /*************************************************
-* @purpose: Insert a substring dynamically before the index of the source string.
-* @params:  in/out: dest -> address of the final string that will have source prefixed.
-            in: src -> string to set as prefix.
-            in: index -> position where the insertion should occur.
-* @return: Return NULL if an error occurs, char pointer (strings prefixed) otherwise.
-* ************************************************/
+* @brief Function to insert a substring dynamically before the index of the source string.
+* @param dest Address of the final string that will have source prefixed.
+* @param src String to set as prefix.
+* @param index Position where the insertion should occur.
+* @return Return NULL if an error occurs, char pointer (strings prefixed) otherwise.
+**************************************************/
 char* STRINGS_insertSubstring(char** dest, const char* src, size_t index) {
     if (src == NULL) {
         return *dest;
@@ -101,6 +108,14 @@ char* STRINGS_insertSubstring(char** dest, const char* src, size_t index) {
     return *dest;
 }
 
+/*************************************************
+* @brief Function to separate the first word from the rest of a string based on a delimiter.
+* @param inputString The input string to separate.
+* @param firstSeparation Pointer to store the first word.
+* @param restOfString Pointer to store the rest of the string.
+* @param delimiter The delimiter used to separate the words (e.g., " " for space).
+* @note If no delimiter is found, the entire string is considered the first word, and the restOfString pointer is set to NULL.
+**************************************************/
 void STRINGS_separateWords(const char* inputString, char** firstSeparation, char** restOfString, const char* delimiter) {
     // Find the position of the first space character
     char* spacePosition = strstr(inputString, delimiter);

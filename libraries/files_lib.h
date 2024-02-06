@@ -1,3 +1,10 @@
+/**
+ * @file files_lib.h
+ * @author Aaron Fort Garcia
+ * @date 3rd February 2024.
+ * @brief System calls with files module.
+ */
+
 #ifndef _FILES_LIB_
 #define _FILES_LIB_
 
