@@ -4,8 +4,14 @@
 #define MINIMUM_ARGUMENTS 1
 #define PROGRAM_USAGE_TEXT "Usage of Clipboard program: ./Clipboard [\"Operation 1\", \"Operation 2\"...]\n"
 
+int numArguments = 0;
+char** argumentValue;
+
 // Transform arguments from the program into valid instructions for the Clipboard.
-void parseArguments(int argc, char* argv[], char* arguments[]) {
+void parseArguments(int argc, char* argv[], char*** arguments) {
+    // Allocate all the necessary memory.
+    *arguments = (char **) malloc (sizeof(char *) * argc);
+
     // Skip the first argument (./programName) with i = 1.
     for (int i = 1; i < argc; i++) {
         size_t startIndex = 0, endIndex = 0;
@@ -22,30 +28,39 @@ void parseArguments(int argc, char* argv[], char* arguments[]) {
         }
 
         // Copy only the interesting content from the parameters.
-        arguments[i - 1] = STRINGS_copySubstring(argv[i], startIndex, endIndex);
+        (*arguments)[i - 1] = STRINGS_copySubstring(argv[i], startIndex, endIndex);
     }
 }
 
 // Free all the memory allocated for the arguments.
-void freeArguments(char* arguments[], int numArguments) {
-    for (int i = 0; i < numArguments; i++) {
+void freeArguments(char** arguments, int numArgs) {
+    for (int i = 0; i < numArgs; i++) {
         GLOBAL_freePointer((void **) &arguments[i]);
     }
+    GLOBAL_freePointer((void **) &arguments);
+}
+
+void signalHandler(int signum __attribute__((unused))) {
+    signal(SIGINT, SIG_DFL);
+    CLIPBOARD_finishClipboard();
+    freeArguments(argumentValue, numArguments);
+    exit(EXIT_SUCCESS);
 }
 
 int main(int argc, char* argv[]) {
+    signal(SIGINT, signalHandler);
+
     // Parse all the arguments.
-    int numArguments = argc - 1;
-    char* arguments[numArguments];
+    numArguments = argc - 1;
 
     if (GLOBAL_validParams(argc, MINIMUM_ARGUMENTS)) {
         GLOBAL_printMessage(PROGRAM_USAGE_TEXT);
         exit(EXIT_FAILURE);
     }
 
-    parseArguments(argc, argv, arguments);
-    CLIPBOARD_startClipboard(numArguments, arguments);
-    freeArguments(arguments, numArguments);
+    parseArguments(argc, argv, &argumentValue);
+    CLIPBOARD_startClipboard(numArguments, argumentValue);
+    freeArguments(argumentValue, numArguments);
 
     return EXIT_SUCCESS;
 }

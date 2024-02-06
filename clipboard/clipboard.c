@@ -14,6 +14,8 @@
 #define CLIPBOARD_ERROR_OPERATION_TEXT "Please enter a valid operation: TYPE, SELECT, MOVE_CURSOR, COPY, PASTE or EXIT.\n\n"
 #define CLIPBOARD_ARGUMENT_OPERATION_TEXT ITALIC_TEXT "Operation typed as argument (input): " COLOR_RESET HWHT "%s" COLOR_RESET "\n"
 
+Clipboard clipboard;
+
 void CLIPBOARD_doOperation(Clipboard* clipboard, ClipboardOperation clipboardOperation) {
     switch (clipboardOperation.operation) {
         case CLIPBOARD_TYPE:
@@ -83,8 +85,13 @@ void CLIPBOARD_showClipboard(Clipboard clipboard) {
     }
 }
 
+void CLIPBOARD_finishClipboard() {
+    CLIPBOARD_MANAGER_freeClipboard(&clipboard);
+    GLOBAL_printMessage(CLIPBOARD_EXIT_OPERATION_TEXT);
+}
+
 void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
-    Clipboard clipboard = CLIPBOARD_MANAGER_newClipboard();
+    clipboard = CLIPBOARD_MANAGER_newClipboard();
 
     if (numOperations > 0) {
         GLOBAL_printMessage(CLIPBOARD_PROCESSING_OPERATIONS_TEXT, numOperations);
@@ -116,6 +123,5 @@ void CLIPBOARD_startClipboard(int numOperations, char* operations[]) {
         /* CLIPBOARD_showClipboard(clipboard);  // Show clipboard's information. */
     } while (userOperation.operation != CLIPBOARD_EXIT);
 
-    CLIPBOARD_MANAGER_freeClipboard(&clipboard);
-    GLOBAL_printMessage(CLIPBOARD_EXIT_OPERATION_TEXT);
+    CLIPBOARD_finishClipboard();
 }
