@@ -4,35 +4,6 @@
 #include "files_lib.h"
 
 /*********************************************** *
-* @brief Function to open a txt file.
-* @param fileName  the name of the file to open.
-* @return Return the valor of the variable fd.
-* ************************************************/
-int FILES_openTextFile(const char* fileName, const char* mode) {
-    int fileDescriptor = INVALID_FILE_DESCRIPTOR;
-
-    if (strcmp(mode, FILE_READ) == 0) {
-        // Read = Only if the file exists.
-        fileDescriptor = open(fileName, O_RDONLY);
-    }
-    else if (strcmp(mode, FILE_WRITE) == 0) {
-        // Write = Create the file and write on it.
-        fileDescriptor = open(fileName, O_WRONLY | O_CREAT | O_TRUNC, 0744);
-    }
-    else {
-        // Read write = Append the information, and create file if it does not exist.
-        fileDescriptor = open(fileName, O_RDWR | O_APPEND | O_CREAT, 0744);
-    }
-
-    if (fileDescriptor < 0) {
-        char error[] = "Error reading the file";
-        perror(error);
-    }
-
-    return fileDescriptor;
-}
-
-/*********************************************** *
 * @brief Function to read a text file until a certain character.
 * @param fd the file descriptor.
 * @param delimiter the delimiter to stop reading.

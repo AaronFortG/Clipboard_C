@@ -12,12 +12,12 @@
 
 // File descriptors
 #include <fcntl.h>
-#include <unistd.h>     // getpid() i fork()
+#include <unistd.h>
 
 // Standard input and output + dynamic memory and strings
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>     // malloc() and exit()
+#include <stdlib.h>
 
 // Signals
 #include <sys/types.h>
@@ -26,21 +26,8 @@
 #include <ctype.h>	// isspace()
 #include <time.h>   // time
 
-// Select
-#include <sys/select.h>
-
-// Infinite / maximum values
-#include <limits.h>
-
-// Forks and Threads
-#include <sys/wait.h> // wait()
-
-// Queue Messages
-#include <sys/msg.h>
-
 // Directories and files
 #include <errno.h>
-#include <sys/stat.h>
 
 // Own libraries
 #include "files_lib.h"
@@ -76,12 +63,6 @@ int GLOBAL_validParams(int numArgs, int numExpected);
 *   @param pointer address of pointer to free (it is also set to NULL).
 */
 void GLOBAL_freePointer(void** pointer);
-
-/**
-* @brief Print an event with the log format: "[DATE] event"
-* @param event string with the event to log
-*/
-void GLOBAL_logEvent(const char *event, ...);
 
 /**
 * @brief Print an error message in red color.

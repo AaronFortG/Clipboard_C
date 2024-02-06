@@ -73,39 +73,6 @@ void GLOBAL_freePointer(void** pointer) {
 }
 
 /**
-* @brief Print an event with the log format: "[DATE] event"
-* @param event string with the event to log
-*/
-void GLOBAL_logEvent(const char *event, ...) {
-    // Initialize the list of arguments and set the list to start before the first string parameter.
-    va_list args;
-    va_start(args, event);
-
-    // vasprintf allocates a string large enough to hold the output including the terminating null byte ('\0').
-    char* buffer = NULL;
-    int length = vasprintf(&buffer, event, args);
-
-    // Check if vasprintf worked fine (returns -1 if some error occurs).
-    if (length < 0) {
-        GLOBAL_freePointer((void **) &buffer);
-        va_end(args);
-        return;
-    }
-
-    time_t t = time(NULL);
-    struct tm *tm = localtime(&t);
-
-    char date[20];
-    strftime(date, sizeof(date), TIME_FORMAT, tm);
-    GLOBAL_printMessage("%s[%s]%s %s", ORANGE_COLOR, date, RESET_COLOR, buffer);
-
-    // Even if vasprintf fails or succeeds, the content of strp is undefined when freed or when an error ocurred.
-    GLOBAL_freePointer((void **) &buffer);
-
-    va_end(args);   // Clean the list of arguments and deinitialize it.
-}
-
-/**
 * @brief Print an error message in red color.
 * @param event string with the error message
 * @param ... arguments to print with the message
